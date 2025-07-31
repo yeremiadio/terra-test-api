@@ -19,13 +19,11 @@ import { GpsModule } from './modules/gps';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        ssl:
-          configService.get<boolean>('DB_SSL') === true
-            ? { rejectUnauthorized: false }
-            : false,
+        ssl: configService.get<boolean>('DB_SSL'),
         entities: [__dirname + '/modules/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '../migrations/*{.ts,.js}'],
-        synchronize: true, // untuk development saja
+        synchronize:
+          configService.get<string>('ENV') === 'production' ? true : false, // untuk development saja
       }),
       inject: [ConfigService],
     }),
