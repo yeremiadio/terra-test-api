@@ -5,7 +5,7 @@ USER node
 WORKDIR /home/node
  
 COPY package*.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
  
 COPY --chown=node:node . .
 RUN npm run build && npm prune --omit=dev
