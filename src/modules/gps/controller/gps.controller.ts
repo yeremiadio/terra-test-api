@@ -31,6 +31,18 @@ export class GpsController {
     description: 'Number of items per page',
     type: Number,
   })
+  @ApiQuery({
+    name: 'imei',
+    required: false,
+    description: 'Imei of the GPS Device',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'isPaginated',
+    required: false,
+    description: 'Wheter to paginate the results',
+    type: Boolean,
+  })
   @ApiResponse({
     status: 200,
     description: 'List of GPS data with pagination',
@@ -39,6 +51,8 @@ export class GpsController {
   async findAll(
     @Query('page') page = '1',
     @Query('limit') limit = '10',
+    @Query('imei') imei = '',
+    @Query('isPaginated') isPaginated,
   ): Promise<BaseResponse<GpsData[]>> {
     const pageNumber = parseInt(page, 10);
     const limitNumber = Math.min(parseInt(limit, 10), 100); // batasi max 100
@@ -46,6 +60,8 @@ export class GpsController {
     const { data, meta } = await this.gpsDataService.findAll(
       pageNumber,
       limitNumber,
+      imei,
+      isPaginated,
     );
 
     return new BaseResponse<GpsData[]>(
@@ -86,5 +102,29 @@ export class GpsController {
       './data/353691846213659_2025_04_13.json',
       './data/353691846213659_2025_04_14.json',
     ]);
+  }
+
+  @Get('latest-for-all')
+  @ApiResponse({
+    status: 200,
+    description: 'List of latest GPS data for all IMEIs',
+    type: BaseResponse,
+  })
+  async findLatestForAll(): Promise<BaseResponse<GpsData[]>> {
+    const data = await this.gpsDataService.findLatestForAll();
+    return new BaseResponse<GpsData[]>(
+      'List of latest GPS data for all IMEIs',
+      data,
+    );
+  }
+
+  @Get('metrics')
+  @ApiQuery({
+    name: 'imei',
+    description: 'IMEI of the GPS device',
+    type: String,
+  })
+  async getDashboardMetrics(@Query('imei') imei = '') {
+    return this.gpsDataService.calculateDashboardMetrics(imei);
   }
 }

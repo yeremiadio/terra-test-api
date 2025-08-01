@@ -1,5 +1,10 @@
-interface Iodata {
+export interface Iodata {
   [key: string]: number;
+}
+
+export interface ValueWithUnit {
+  value: number;
+  unit: string;
 }
 
 export interface GpsDataEntry {
