@@ -94,15 +94,15 @@ export class GpsController {
     return new BaseResponse<GpsData>(`Latest GPS data for IMEI ${imei}`, data);
   }
 
-  @Get('seed')
-  seedService() {
-    return this.gpsSeederService.seedFromFiles([
-      './data/353691845092989_2025_04_28.json',
-      './data/353691845092989_2025_04_29.json',
-      './data/353691846213659_2025_04_13.json',
-      './data/353691846213659_2025_04_14.json',
-    ]);
-  }
+  // @Get('seed')
+  // seedService() {
+  //   return this.gpsSeederService.seedFromFiles([
+  //     './data/353691845092989_2025_04_28.json',
+  //     './data/353691845092989_2025_04_29.json',
+  //     './data/353691846213659_2025_04_13.json',
+  //     './data/353691846213659_2025_04_14.json',
+  //   ]);
+  // }
 
   @Get('latest-for-all')
   @ApiResponse({
